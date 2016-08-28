@@ -6,7 +6,7 @@ const reqwest = require('reqwest')
 
 class Loading extends React.Component {
   render () {
-    return <div>
+    return <div className='container'>
       Loading...
     </div>
   }
