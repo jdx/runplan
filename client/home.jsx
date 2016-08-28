@@ -22,15 +22,18 @@ class Calendar extends React.Component {
   render () {
     if (!this.state) return <Loading />
     let plan = this.state.plan
-    const planHtml = plan.map(week => {
-      const days = week.days.map((day, i) => {
-        const date = moment(week.start).add(i, 'days')
-        return <td key={i}>
+    const planHtml = plan.weeks.map(week => {
+      const days = week.days.map(day => {
+        const date = moment(day.date)
+        let run = day.planned === 0
+        ? <div>{day.type}</div>
+        : <div>{day.planned}mi {day.type}</div>
+        return <td key={day.date}>
           <h4>{date.format(date.date() === 1 ? 'MMM D' : 'D')}</h4>
-          <div>Planned: {day.planned}</div>
+          {run}
         </td>
       })
-      return <tr key={week.start}>
+      return <tr key={week.days[0].date}>
         <td>
         Actual: {week.total.actual}<br />
         Planned: {week.total.planned}
@@ -64,7 +67,6 @@ class Calendar extends React.Component {
   }
 
   reload () {
-    console.log('reloading plan')
     reqwest('/api/plan')
     .then(plan => this.setState({plan}))
   }
@@ -73,7 +75,15 @@ class Calendar extends React.Component {
 class AddRace extends React.Component {
   constructor () {
     super()
-    this.state = {}
+    this.state = this.defaults
+  }
+  get defaults () {
+    return {
+      type: 'Marathon',
+      date: moment().add(3, 'months').format('YYYY-MM-DD'),
+      adding: false,
+      disabled: false
+    }
   }
   render () {
     if (!this.state.adding) {
@@ -83,23 +93,29 @@ class AddRace extends React.Component {
     }
 
     const disabled = this.state.disabled ? 'disabled' : ''
-    return <div>
-      <input type='date' disabled={disabled} onChange={e => this.setState({date: e.target.value})} />
+    return <div className='form-group form-inline'>
+      <select className='form-control' defaultValue={this.state.type} onChange={e => this.setState({type: e.target.value})}>
+        <option>5K</option>
+        <option>10K</option>
+        <option>Half Marathon</option>
+        <option>Marathon</option>
+      </select>
+      <input className='form-control' type='date' disabled={disabled} onChange={e => this.setState({date: e.target.value})} defaultValue={this.state.date} />
       <button onClick={() => this.add()} disabled={disabled} className='btn btn-default'>Add Race</button>
     </div>
   }
 
   add () {
-    let {date} = this.state
+    let {date, type} = this.state
     if (!date) return
     this.setState({disabled: true})
     reqwest({
       url: '/api/plan',
       method: 'POST',
-      data: {date}
+      data: {date, type}
     }).then(() => {
       events.emit('plan_updated')
-      this.setState({adding: false, date: null, disabled: false})
+      this.setState(this.defaults)
     })
   }
 }
