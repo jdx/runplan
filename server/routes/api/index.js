@@ -1,44 +1,35 @@
 'use strict'
 
 import Router from 'koa-router'
+import moment from 'moment'
+
 const r = Router({
   prefix: '/api'
 })
 
+let raceDate = new Date(2017, 2, 19)
+
 r.get('/plan', async ctx => {
-  const plan = [
-    {
-      start: new Date(2016, 7, 20),
+  let date = moment(new Date()).subtract(3, 'weeks')
+  while (date.weekday() !== 1) date.subtract(1, 'days')
+  let plan = []
+  while (date.toDate() < raceDate) {
+    let week = {
+      start: date.toDate(),
       total: {planned: 25, actual: 28.7},
-      days: [
-        {planned: new Date()},
-        {planned: 3},
-        {planned: 5},
-        {planned: 3},
-        {planned: 0},
-        {planned: 3},
-        {planned: 8}
-      ]
-    },
-    {
-      start: new Date(2016, 7, 27),
-      total: {planned: 25, actual: 28.7},
-      days: [
-        {planned: 0},
-        {planned: 3},
-        {planned: 5},
-        {planned: 3},
-        {planned: 0},
-        {planned: 3},
-        {planned: 8}
-      ]
+      days: []
     }
-  ]
+    for (let i = 0; i < 7; i++) {
+      week.days.push({planned: 3})
+      date.add(1, 'days')
+    }
+    plan.push(week)
+  }
   ctx.body = plan
 })
 
 r.post('/plan', async ctx => {
-  console.dir(ctx.request.body)
+  raceDate = moment(ctx.request.body.date).toDate()
   ctx.status = 201
 })
 
