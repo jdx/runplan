@@ -24,6 +24,7 @@
     "babelify": "7.3.0",
     "factor-bundle": "2.5.0",
     "koa": "2.0.0-alpha.5",
+    "koa-bodyparser": "3.2.0",
     "koa-morgan": "1.0.1",
     "koa-router": "7.0.1",
     "koa-send": "3.2.0",
@@ -56,7 +57,7 @@
     "start": "node server",
     "uglify:client": "uglifyjs public/app.js -o public/app.js --mangle --compress=warnings=false",
     "uglify:vendor": "uglifyjs public/vendor.js -o public/vendor.js --mangle --compress=warnings=false",
-    "watch:client": "nodemon -d 10ms -w client --ext .jsx --exec 'npm run build:client -s'",
+    "watch:client": "nodemon -d 10ms -w client --ext .jsx,.js --exec 'npm run build:client -s'",
     "watch:server": "nodemon -w server --exec 'npm start -s'"
   },
   "standard": {
