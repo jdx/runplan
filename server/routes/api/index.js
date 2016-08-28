@@ -71,6 +71,7 @@ r.post('/plan', async ctx => {
             break
         }
       }
+      week.total.actual = 0
       week.total.planned += day.planned
       week.days.push(day)
       date.add(1, 'days')

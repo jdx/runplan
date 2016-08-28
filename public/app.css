@@ -1,3 +1,8 @@
+h1 {
+  font-family: "Baloo Tamma";
+  font-size: 60px;
+}
+
 #calendar {
   border: 0;
   margin-top: 16px;
@@ -48,6 +53,10 @@
 
 #calendar tbody .day .cross {
   color: #ff9900;
+}
+
+#calendar tbody .day .race {
+  color: #ff0066;
 }
 
 #calendar tbody .day .date {

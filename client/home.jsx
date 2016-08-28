@@ -22,21 +22,23 @@ class Calendar extends React.Component {
   render () {
     if (!this.state) return <Loading />
     let plan = this.state.plan
+    const today = moment().startOf('day')
     const planHtml = plan.weeks.map(week => {
       const days = week.days.map(day => {
         const date = moment(day.date).startOf('day')
-        let today = ''
-        if (date.isBefore(moment().startOf('day'))) today = ' before'
-        if (date.isSame(moment().startOf('day'))) today = ' today'
+        let relative = ''
+        if (date.isBefore(today)) relative = ' before'
+        if (date.isSame(today)) relative = ' today'
         let run = day.planned === 0 ? day.type : `${day.planned}mi ${day.type}`
-        return <td className={'day' + today} key={day.date}>
+        return <td className={'day' + relative} key={day.date}>
           <div className='date'>{date.format(date.date() === 1 ? 'MMM D' : 'D')}</div>
           <div className={'planned ' + day.type}>{run}</div>
         </td>
       })
       return <tr key={week.days[0].date}>
         <td className='summary'>
-        {week.total.planned}mi
+          {today.isSameOrAfter(week.days[0].date) ? week.total.actual + '/' : '' }
+          {week.total.planned}mi
         </td>
         {days}
       </tr>
@@ -124,7 +126,7 @@ class Home extends React.Component {
   render () {
     return <div>
       <div className='container'>
-        <br />
+        <h1>Jeff's Training Plan</h1>
         <AddRace />
       </div>
       <Calendar />
