@@ -22,6 +22,7 @@
     "babel-preset-stage-3": "6.11.0",
     "babel-register": "6.14.0",
     "babelify": "7.3.0",
+    "factor-bundle": "2.5.0",
     "koa": "2.0.0-alpha.5",
     "koa-morgan": "1.0.1",
     "koa-router": "7.0.1",
@@ -32,7 +33,7 @@
     "react": "15.3.0",
     "react-dom": "15.3.0",
     "react-router": "2.6.1",
-    "react-router-scroll": "0.3.1",
+    "reqwest": "2.0.5",
     "uglify-js": "2.7.3"
   },
   "devDependencies": {
@@ -46,14 +47,16 @@
     "git": "github.com/dickeyxxx/runplan"
   },
   "scripts": {
-    "build:client": "browserify client/app.jsx -o public/app.js --extension=.jsx",
+    "build:vendor": "browserify client/app.jsx -r react -r react-dom -r moment -r reqwest --extension=.jsx > public/vendor.js",
+    "build:client": "browserify client/app.jsx -x react -x react-dom -x moment -x reqwest --extension=.jsx > public/app.js.tmp && mv public/app.js.tmp public/app.js",
     "build:server": "babel server -d build --presets es2015,stage-3",
-    "dev": "npm run livereload -s & npm run watch:server -s & npm run watch:client -s & wait",
+    "dev": "npm run build:vendor -s & npm run livereload -s & npm run watch:server -s & npm run watch:client -s & wait",
     "livereload": "livereload public",
-    "postinstall": "npm run build:server & npm run build:client & wait && npm run uglify",
+    "postinstall": "npm run build:server & npm run build:client & npm run build:vendor & wait && (npm run uglify:client & npm run uglify:vendor & wait)",
     "start": "node server",
-    "uglify": "uglifyjs public/app.js -o public/app.js --mangle --compress=warnings=false",
-    "watch:client": "nodemon -w client --ext .jsx --exec 'npm run build:client -s'",
+    "uglify:client": "uglifyjs public/app.js -o public/app.js --mangle --compress=warnings=false",
+    "uglify:vendor": "uglifyjs public/vendor.js -o public/vendor.js --mangle --compress=warnings=false",
+    "watch:client": "nodemon -d 10ms -w client --ext .jsx --exec 'npm run build:client -s'",
     "watch:server": "nodemon -w server --exec 'npm start -s'"
   },
   "standard": {

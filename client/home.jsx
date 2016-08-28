@@ -2,25 +2,24 @@
 
 const React = require('react')
 const moment = require('moment')
+const reqwest = require('reqwest')
 
-const plan = [
-  {
-    start: new Date(2016, 7, 20),
-    total: {planned: 25, actual: 28.7},
-    days: [
-      {planned: 0},
-      {planned: 3},
-      {planned: 5},
-      {planned: 3},
-      {planned: 0},
-      {planned: 3},
-      {planned: 8}
-    ]
+class Loading extends React.Component {
+  render () {
+    return <div>
+      Loading...
+    </div>
   }
-]
+}
 
 class Home extends React.Component {
+  componentDidMount () {
+    reqwest('/api/plan')
+    .then(plan => this.setState({plan}))
+  }
   render () {
+    if (!this.state) return <Loading />
+    let plan = this.state.plan
     const planHtml = plan.map(week => {
       const days = week.days.map((day, i) => {
         const date = moment(week.start).add(i, 'days')
@@ -41,7 +40,7 @@ class Home extends React.Component {
       <table className='table'>
         <thead>
           <tr>
-            <td></td>
+            <td />
             <td>Monday</td>
             <td>Tuesday</td>
             <td>Wednesday</td>

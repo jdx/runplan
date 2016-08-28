@@ -2,15 +2,13 @@
 
 const React = require('react')
 const ReactDOM = require('react-dom')
-const {Router, Route, IndexRoute, browserHistory, applyRouterMiddleware} = require('react-router')
+const {Router, Route, IndexRoute, browserHistory} = require('react-router')
 const Home = require('./home')
-const {useScroll} = require('react-router-scroll')
 
 class App extends React.Component {
   render () {
     return <div>
       <header>
-      oooo
       </header>
       {this.props.children}
       <footer>
@@ -20,7 +18,7 @@ class App extends React.Component {
 }
 
 ReactDOM.render((
-  <Router history={browserHistory} render={applyRouterMiddleware(useScroll())}>
+  <Router history={browserHistory}>
     <Route path='/' component={App}>
       <IndexRoute component={Home} />
     </Route>
