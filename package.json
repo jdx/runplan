@@ -36,8 +36,7 @@
     "uglify-js": "2.7.3"
   },
   "devDependencies": {
-    "livereload": "0.5.0",
-    "watch": "0.19.2"
+    "livereload": "0.5.0"
   },
   "engines": {
     "node": "^6.4.0"
@@ -54,7 +53,7 @@
     "postinstall": "npm run build:server & npm run build:client & wait && npm run uglify",
     "start": "node server",
     "uglify": "uglifyjs public/app.js -o public/app.js --mangle --compress=warnings=false",
-    "watch:client": "watch 'npm run build:client -s' client",
+    "watch:client": "nodemon -w client --ext .jsx --exec 'npm run build:client -s'",
     "watch:server": "nodemon -w server --exec 'npm start -s'"
   },
   "standard": {
