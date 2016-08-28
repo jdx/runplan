@@ -1,6 +1,9 @@
 #calendar {
   border: 0;
-  margin-top: 20px
+  margin-top: 16px;
+  font-family: Helvetica, Arial;
+  font-size: 18px;
+  cursor: default;
 }
 
 #calendar thead td {
@@ -8,10 +11,56 @@
   border-right: 0;
 }
 
-#calendar tbody td:first-child {
+#calendar tbody .summary:first-child {
   width: 16%;
 }
 
-#calendar tbody td {
+#calendar tbody .day {
   width: 12%;
+  height: 80px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#calendar tbody .day:hover {
+  background-color: #eee;
+}
+
+#calendar tbody .day .easy {
+  color: #0099ff;
+}
+
+#calendar tbody .day .pace {
+  color: #ff5050;
+}
+
+#calendar tbody .day .rest {
+  color: #003399;
+}
+
+#calendar tbody .day .long {
+  color: #33cc33;
+}
+
+#calendar tbody .day .tempo {
+  color: #cc00cc;
+}
+
+#calendar tbody .day .cross {
+  color: #ff9900;
+}
+
+#calendar tbody .day .date {
+  font-weight: normal;
+  margin: -5px 0 0 0;
+  color: #888;
+  font-size: 13px;
+}
+
+#calendar tbody .before .planned {
+  opacity: 0.4;
+}
+
+#calendar tbody .today {
+  background-color: #ffe6ee;
 }

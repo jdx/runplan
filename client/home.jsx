@@ -24,19 +24,19 @@ class Calendar extends React.Component {
     let plan = this.state.plan
     const planHtml = plan.weeks.map(week => {
       const days = week.days.map(day => {
-        const date = moment(day.date)
-        let run = day.planned === 0
-        ? <div>{day.type}</div>
-        : <div>{day.planned}mi {day.type}</div>
-        return <td key={day.date}>
-          <h4>{date.format(date.date() === 1 ? 'MMM D' : 'D')}</h4>
-          {run}
+        const date = moment(day.date).startOf('day')
+        let today = ''
+        if (date.isBefore(moment().startOf('day'))) today = ' before'
+        if (date.isSame(moment().startOf('day'))) today = ' today'
+        let run = day.planned === 0 ? day.type : `${day.planned}mi ${day.type}`
+        return <td className={'day' + today} key={day.date}>
+          <div className='date'>{date.format(date.date() === 1 ? 'MMM D' : 'D')}</div>
+          <div className={'planned ' + day.type}>{run}</div>
         </td>
       })
       return <tr key={week.days[0].date}>
-        <td>
-        Actual: {week.total.actual}<br />
-        Planned: {week.total.planned}
+        <td className='summary'>
+        {week.total.planned}mi
         </td>
         {days}
       </tr>
