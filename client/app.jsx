@@ -10,6 +10,7 @@ class App extends React.Component {
   render () {
     return <div>
       <header>
+      ooooo
       </header>
       {this.props.children}
       <footer>
