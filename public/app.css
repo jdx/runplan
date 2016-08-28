@@ -1,0 +1,17 @@
+#calendar {
+  border: 0;
+  margin-top: 20px
+}
+
+#calendar thead td {
+  border-left: 0;
+  border-right: 0;
+}
+
+#calendar tbody td:first-child {
+  width: 16%;
+}
+
+#calendar tbody td {
+  width: 12%;
+}

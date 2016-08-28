@@ -42,7 +42,7 @@ class Calendar extends React.Component {
       </tr>
     })
     return <div className='container'>
-      <table className='table'>
+      <table id='calendar' className='table table-bordered table-condensed'>
         <thead>
           <tr>
             <td />
